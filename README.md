@@ -210,6 +210,23 @@ N/A
     signal: start
 ```
 
+### Using a self-hosted instance of Healthchecks.io
+
+The `management_api_base_url` and `ping_api_base_url` parameters can be used to direct the modules in this Collection towards a self-hosted instance of Healthchecks.io. By default, or if unset, it defaults to the public instance located at hc-ping.com.
+
+Example Ansible configuration using the `management_api_base_url` and `ping_api_base_url` variables:
+
+```yaml
+- name: Create a check named "test"
+  community.healthchecksio.checks:
+    state: present
+    api_key: "{{ api_key }}"
+    management_api_base_url: "{{ management_api_base_url }}"
+    ping_api_base_url: "{{ ping_api_base_url }}"
+    name: test
+    unique: ["name"]
+```
+
 ### Installing the Collection from Ansible Galaxy
 
 Before using this collection, you need to install it with the Ansible Galaxy command-line tool:

@@ -9,7 +9,10 @@ set -u
 function main()
 {
   readonly template="$1"; shift
-  readonly content="$(cat "$template")"
+
+  local content
+  content="$(cat "$template")"
+  readonly content
 
   eval "echo \"$content\""
 }

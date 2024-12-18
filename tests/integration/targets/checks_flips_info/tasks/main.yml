@@ -7,11 +7,40 @@
       when:
         - api_key is not defined
         - api_key | length == 0
+    - name: Create a Simple check named "simple test"
+      community.healthchecksio.checks:
+        state: present
+        api_key: "{{ api_key }}"
+        management_api_base_url: "{{ management_api_base_url }}"
+        ping_api_base_url: "{{ ping_api_base_url }}"
+        name: simple test
+        unique: ["name"]
+        timeout: 77
+      register: result
+
+    - name: Verify integrations
+      ansible.builtin.assert:
+        that:
+          - result.changed
+          - result.data is defined
+          - result.data.name is defined
+          - result.data.name == "simple test"
+          - result.uuid is defined
+
+    - name: Set a fact for the check
+      ansible.builtin.set_fact:
+        uuid: "{{ result.uuid }}"
+
+    - name: Pause for ten seconds
+      ansible.builtin.pause:
+        seconds: 10
 
     - name: Get the list check flips
       community.healthchecksio.checks_flips_info:
         api_key: "{{ api_key }}"
-        uuid: "{{ check_uuid }}"
+        management_api_base_url: "{{ management_api_base_url }}"
+        ping_api_base_url: "{{ ping_api_base_url }}"
+        uuid: "{{ uuid }}"
       register: result
 
     - name: Verify integrations
@@ -20,3 +49,23 @@
           - not result.changed
           - result.data is defined
           - result.data.flips is defined
+
+    - name: Pause for ten seconds
+      ansible.builtin.pause:
+        seconds: 10
+
+    - name: Delete the Simple check
+      community.healthchecksio.checks:
+        state: absent
+        api_key: "{{ api_key }}"
+        management_api_base_url: "{{ management_api_base_url }}"
+        ping_api_base_url: "{{ ping_api_base_url }}"
+        uuid: "{{ uuid }}"
+      register: result
+
+    - name: Verify integrations
+      ansible.builtin.assert:
+        that:
+          - result.changed
+          - result.msg is defined
+          - result.msg == "Check " ~ uuid ~ " successfully deleted"
