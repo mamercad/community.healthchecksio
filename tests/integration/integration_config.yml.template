@@ -1,2 +1,5 @@
 ---
-api_key: ${HEALTHCHECKSIO_API_TOKEN}
+api_key: ${MANAGEMENT_API_TOKEN:-$HEALTHCHECKSIO_API_TOKEN}
+management_api_base_url: ${MANAGEMENT_API_BASE_URL:-"https://healthchecks.io/api/v1"}
+ping_api_base_url: ${PING_API_BASE_URL:-"https://hc-ping.com"}
+ping_api_token: ${PING_API_TOKEN:-""}

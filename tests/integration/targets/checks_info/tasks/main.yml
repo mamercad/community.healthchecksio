@@ -11,6 +11,8 @@
     - name: Get the list of checks
       community.healthchecksio.checks_info:
         api_key: "{{ api_key }}"
+        management_api_base_url: "{{ management_api_base_url }}"
+        ping_api_base_url: "{{ ping_api_base_url }}"
       register: result
 
     - name: Verify integrations

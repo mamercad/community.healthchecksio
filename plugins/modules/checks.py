@@ -208,6 +208,7 @@ def main():
         channels=dict(type="str", required=False, default=""),
         unique=dict(type="list", elements="str", required=False, default=[]),
         uuid=dict(type="str", required=False, default=""),
+        slug=dict(type="str", required=False, default=""),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
